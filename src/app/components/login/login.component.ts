@@ -36,7 +36,7 @@ export class LoginComponent {
         this.isSubmitting = false;
         this.alertService.showAlert(`Bienvenue ${email}`, 'success');
 
-        //this.router.navigate(['/tasks']);
+        this.router.navigate(['/tasks']);
       },
       error: () => (this.isSubmitting = false), // Erreurs gérées par ErrorInterceptor
     });
