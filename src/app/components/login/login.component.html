@@ -1,0 +1,62 @@
+<div class="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+  <div class="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+    <h2 class="mb-6 text-center text-2xl font-bold text-gray-800">Connexion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="mb-5">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="mt-1 w-full rounded-md border p-3 transition-colors"
+          [ngClass]="{
+            'border-red-500': loginForm.get('email')?.touched && loginForm.get('email')?.invalid,
+            'border-green-500': loginForm.get('email')?.valid
+          }"
+          aria-describedby="email-error"
+          placeholder="Entrez votre email"
+        />
+        <div
+          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+          id="email-error"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">Email requis.</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">Email invalide.</div>
+        </div>
+      </div>
+      <div class="mb-5">
+        <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="mt-1 w-full rounded-md border p-3 transition-colors"
+          [ngClass]="{
+            'border-red-500': loginForm.get('password')?.touched && loginForm.get('password')?.invalid,
+            'border-green-500': loginForm.get('password')?.valid
+          }"
+          aria-describedby="password-error"
+          placeholder="Entrez votre mot de passe"
+        />
+        <div
+          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+          id="password-error"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">Mot de passe requis.</div>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="w-full rounded-md bg-blue-600 p-3 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+        [disabled]="loginForm.invalid || isSubmitting"
+      >
+        {{ isSubmitting ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+    <p class="mt-4 text-center text-sm text-gray-600">
+      Pas de compte ? <a routerLink="/register" class="text-blue-600 hover:underline">S'inscrire</a>
+    </p>
+  </div>
+</div>

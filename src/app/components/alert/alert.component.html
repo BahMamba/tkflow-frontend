@@ -1,0 +1,48 @@
+<div
+  *ngIf="alert"
+  class="fixed top-6 right-6 z-50 w-[90%] max-w-sm animate-slide-down rounded-xl shadow-lg transition-all duration-500 sm:w-auto"
+  [ngClass]="{
+    'bg-green-50 border-l-4 border-green-600 text-green-800': alert.type === 'success',
+    'bg-red-50 border-l-4 border-red-600 text-red-800': alert.type === 'error'
+  }"
+>
+  <div class="flex items-start gap-3 p-4">
+    <div class="flex-shrink-0">
+      <!-- Icône succès -->
+      <svg
+        *ngIf="alert.type === 'success'"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-green-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+
+      <!-- Icône erreur -->
+      <svg
+        *ngIf="alert.type === 'error'"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-red-600"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
+
+    <div class="flex-1">
+      <p class="text-sm font-medium leading-snug">{{ alert.message }}</p>
+    </div>
+
+    <button
+      (click)="close()"
+      class="ml-2 rounded-full p-1 text-gray-500 transition hover:bg-gray-200 hover:text-gray-700"
+      aria-label="Fermer l'alerte"
+    >
+      ✖
+    </button>
+  </div>
+</div>
