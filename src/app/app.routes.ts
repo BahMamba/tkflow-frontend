@@ -36,5 +36,13 @@ export const routes: Routes = [
     ],
   },
 
+  {
+    path: 'stats',
+    loadComponent: () =>
+    import('./components/task-stats/task-stats.component').then(m => m.TaskStatsComponent),
+    canActivate: [AuthGuard],
+  },
+
+
   { path: '**', redirectTo: '/login' },
 ];

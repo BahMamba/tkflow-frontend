@@ -8,9 +8,10 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, FormsModule,RouterModule],
+  standalone: true, // Added for Angular standalone components (if applicable)
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+  styleUrls: ['./task-list.component.css'] // Note: No external CSS needed since we're using Tailwind inline
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
@@ -76,15 +77,15 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-    markAsDone(task: Task): void {
+  markAsDone(task: Task): void {
     this.taskService.markTaskAsDone(task.id).subscribe({
       next: (updatedTask) => {
-        task.status = updatedTask.status; // ✅ met à jour le statut localement
+        task.status = updatedTask.status;
+        this.alertService.showAlert('Tâche marquée comme terminée.', 'success'); // Added success message
       },
       error: () => {
         this.alertService.showAlert('Erreur lors de la mise à jour.', 'error');
       },
     });
   }
-
 }

@@ -70,10 +70,10 @@
     >
       <div
         *ngFor="let task of tasks"
-        class="bg-white bg-opacity-90 rounded-lg p-4 shadow hover:shadow-md transition group relative"
+        class="bg-white bg-opacity-90 rounded-lg p-4 shadow hover:shadow-md transition relative"
       >
         <!-- Action Buttons -->
-        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+        <div class="absolute top-3 right-3 flex gap-2">
           <button
             class="text-indigo-500 hover:text-indigo-700 p-1 rounded hover:bg-indigo-100 transition"
             [routerLink]="['/tasks/edit', task.id]"
@@ -90,8 +90,23 @@
             title="Supprimer"
             aria-label="Supprimer la tâche"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4" />
+            </svg>
+          </button>
+          <button
+            (click)="markAsDone(task)"
+            [disabled]="task.status === 'done'"
+            class="text-green-500 hover:text-green-600 p-1 rounded hover:bg-green-100 transition"
+            [ngClass]="{
+              'text-green-500 hover:text-green-600': task.status !== 'done',
+              'text-gray-400 cursor-not-allowed': task.status === 'done'
+            }"
+            [attr.aria-label]="task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée'"
+            title="{{ task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée' }}"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
           </button>
         </div>
@@ -125,29 +140,6 @@
             {{ task.priority | titlecase }}
           </span>
         </div>
-
-        <!-- Mark as Done Button -->
-        <button
-          (click)="markAsDone(task)"
-          [disabled]="task.status === 'done'"
-          class="mt-2 px-3 py-1.5 text-sm rounded-md shadow-sm transition w-full font-medium flex items-center justify-center gap-1"
-          [ngClass]="{
-            'bg-green-500 hover:bg-green-600 text-white': task.status !== 'done',
-            'bg-gray-300 text-gray-500 cursor-not-allowed': task.status === 'done'
-          }"
-          aria-label="{{ task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée' }}"
-        >
-          <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          {{ task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée' }}
-        </button>
 
         <!-- Metadata -->
         <div class="text-xs text-gray-400 mt-2">

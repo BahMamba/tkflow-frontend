@@ -1,0 +1,68 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-8 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Statistiques de mes tâches</h1>
+
+    <!-- Loader -->
+    <div *ngIf="loading" class="text-center py-8 text-gray-600 text-lg animate-pulse">
+      Chargement...
+    </div>
+
+    <div *ngIf="!loading && stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Total -->
+      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
+        <h2 class="text-lg font-semibold text-indigo-600 mb-2">Total</h2>
+        <p class="text-3xl font-bold text-gray-800">{{ stats.total }}</p>
+      </div>
+
+      <!-- Par statut -->
+      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
+        <h2 class="text-lg font-semibold text-blue-600 mb-3">Par statut</h2>
+        <ul class="text-gray-700 text-sm space-y-2">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            À faire : <span class="font-medium">{{ stats.by_status['todo'] || 0 }}</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            En cours : <span class="font-medium">{{ stats.by_status['in_progress'] || 0 }}</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+            </svg>
+            Terminées : <span class="font-medium">{{ stats.by_status['done'] || 0 }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Par priorité -->
+      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
+        <h2 class="text-lg font-semibold text-purple-600 mb-3">Par priorité</h2>
+        <ul class="text-gray-700 text-sm space-y-2">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+            </svg>
+            Basse : <span class="font-medium">{{ stats.by_priority['low'] || 0 }}</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+            </svg>
+            Moyenne : <span class="font-medium">{{ stats.by_priority['medium'] || 0 }}</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+            Haute : <span class="font-medium">{{ stats.by_priority['high'] || 0 }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
