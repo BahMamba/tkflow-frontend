@@ -4,10 +4,11 @@ import { AlertModalService } from '../../services/alert-modal.service';
 import { TaskService } from '../../services/task.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
@@ -74,4 +75,16 @@ export class TaskListComponent implements OnInit {
     this.page = newPage;
     this.loadTasks();
   }
+
+    markAsDone(task: Task): void {
+    this.taskService.markTaskAsDone(task.id).subscribe({
+      next: (updatedTask) => {
+        task.status = updatedTask.status; // ✅ met à jour le statut localement
+      },
+      error: () => {
+        this.alertService.showAlert('Erreur lors de la mise à jour.', 'error');
+      },
+    });
+  }
+
 }

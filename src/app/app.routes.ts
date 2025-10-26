@@ -1,16 +1,40 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
 
-
-  {path: 'tasks', loadComponent: () => import('./components/task-list/task-list.component').then(m=>m.TaskListComponent),
+  {
+    path: 'tasks',
     canActivate: [AuthGuard],
-  }
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/task-list/task-list.component').then(
+            (m) => m.TaskListComponent
+          ),
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./components/task-form/task-form.component').then(
+            (m) => m.TaskFormComponent
+          ),
+      },
+      {
+        path: 'edit/:id',
+        loadComponent: () =>
+          import('./components/task-form/task-form.component').then(
+            (m) => m.TaskFormComponent
+          ),
+      },
+    ],
+  },
+
+  { path: '**', redirectTo: '/login' },
 ];

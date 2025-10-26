@@ -1,90 +1,182 @@
-<div class="p-4 max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold mb-4 text-center">Mes Tâches</h1>
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 py-8 px-4 sm:px-6">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+      <h1 class="text-3xl font-bold text-gray-800">Mes Tâches</h1>
+      <a
+        routerLink="/tasks/new"
+        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium shadow transition hover:scale-105"
+        aria-label="Nouvelle tâche"
+      >
+        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Nouvelle tâche
+      </a>
+    </div>
 
-  <!-- Recherche et filtres -->
-  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-    <input
-      type="text"
-      placeholder="Rechercher..."
-      [(ngModel)]="search"
-      (ngModelChange)="onSearchChange($event)"
-      class="p-2 border rounded-md w-full sm:w-1/3"
-    />
-    <select [(ngModel)]="statusFilter" (change)="onFilterChange()" class="p-2 border rounded-md" title="Filtrer par statut" aria-label="Filtrer par statut">
-      <option value="">Tous les statuts</option>
-      <option value="todo">À faire</option>
-      <option value="in_progress">En cours</option>
-      <option value="done">Terminé</option>
-    </select>
-    <select [(ngModel)]="priorityFilter" (change)="onFilterChange()" class="p-2 border rounded-md" title="Filtrer par priorité" aria-label="Filtrer par priorité">
-      <option value="">Toutes les priorités</option>
-      <option value="low">Basse</option>
-      <option value="medium">Moyenne</option>
-      <option value="high">Haute</option>
-    </select>
-  </div>
+    <!-- Search and Filters -->
+    <div class="mb-8 bg-white bg-opacity-90 p-4 rounded-lg shadow border border-gray-100">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <input
+          type="text"
+          placeholder="Rechercher une tâche..."
+          [(ngModel)]="search"
+          (ngModelChange)="onSearchChange($event)"
+          class="p-2 border border-gray-200 rounded-lg w-full sm:w-1/3 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+          aria-label="Rechercher une tâche"
+        />
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <select
+            [(ngModel)]="statusFilter"
+            (change)="onFilterChange()"
+            class="p-2 border border-gray-200 rounded-lg w-full sm:w-40 focus:ring-2 focus:ring-indigo-500 transition"
+            aria-label="Filtrer par statut"
+          >
+            <option value="">Tous les statuts</option>
+            <option value="todo">À faire</option>
+            <option value="in_progress">En cours</option>
+            <option value="done">Terminé</option>
+          </select>
+          <select
+            [(ngModel)]="priorityFilter"
+            (change)="onFilterChange()"
+            class="p-2 border border-gray-200 rounded-lg w-full sm:w-40 focus:ring-2 focus:ring-indigo-500 transition"
+            aria-label="Filtrer par priorité"
+          >
+            <option value="">Toutes les priorités</option>
+            <option value="low">Basse</option>
+            <option value="medium">Moyenne</option>
+            <option value="high">Haute</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-  <!-- Liste des tâches -->
-  <div *ngIf="loading" class="text-center py-4">Chargement...</div>
-  <div *ngIf="!loading && tasks.length === 0" class="text-center py-4 text-gray-500">Aucune tâche trouvée.</div>
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-8 text-gray-600 text-lg animate-pulse">
+      Chargement...
+    </div>
 
-  <ul *ngIf="!loading && tasks.length > 0" class="space-y-2">
-    <li
-      *ngFor="let task of tasks"
-      class="flex justify-between items-center p-4 border rounded-md hover:shadow-md transition-shadow bg-white"
+    <!-- No Tasks -->
+    <div *ngIf="!loading && tasks.length === 0" class="text-center py-8 text-gray-500">
+      <p class="text-lg font-medium">Aucune tâche trouvée</p>
+    </div>
+
+    <!-- Task List -->
+    <div
+      *ngIf="!loading && tasks.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
     >
-      <div>
-        <h2 class="font-semibold text-lg">{{ task.title }}</h2>
-        <p class="text-gray-600">{{ task.description }}</p>
-        <div class="flex gap-2 mt-1">
+      <div
+        *ngFor="let task of tasks"
+        class="bg-white bg-opacity-90 rounded-lg p-4 shadow hover:shadow-md transition group relative"
+      >
+        <!-- Action Buttons -->
+        <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition">
+          <button
+            class="text-indigo-500 hover:text-indigo-700 p-1 rounded hover:bg-indigo-100 transition"
+            [routerLink]="['/tasks/edit', task.id]"
+            title="Modifier"
+            aria-label="Modifier la tâche"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.862 4.487l1.687 1.687a2.25 2.25 0 010 3.182l-8.839 8.839a4.5 4.5 0 01-1.591.99l-3.444 1.149 1.149-3.444a4.5 4.5 0 01.99-1.591l8.839-8.839a2.25 2.25 0 013.182 0z" />
+            </svg>
+          </button>
+          <button
+            class="text-gray-400 hover:text-red-500 p-1 rounded hover:bg-red-100 transition"
+            (click)="deleteTask(task.id)"
+            title="Supprimer"
+            aria-label="Supprimer la tâche"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Task Content -->
+        <h2 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{{ task.title }}</h2>
+        <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+          {{ task.description || 'Aucune description' }}
+        </p>
+
+        <!-- Status and Priority -->
+        <div class="flex gap-2 mb-3">
           <span
-            class="px-2 py-1 rounded text-white text-xs"
+            class="px-2 py-1 text-xs font-medium rounded-full text-white"
             [ngClass]="{
               'bg-blue-500': task.status === 'todo',
               'bg-yellow-500': task.status === 'in_progress',
               'bg-green-500': task.status === 'done'
             }"
           >
-            {{ task.status }}
+            {{ task.status | titlecase }}
           </span>
           <span
-            class="px-2 py-1 rounded text-white text-xs"
+            class="px-2 py-1 text-xs font-medium rounded-full text-white"
             [ngClass]="{
               'bg-gray-400': task.priority === 'low',
               'bg-indigo-500': task.priority === 'medium',
               'bg-red-500': task.priority === 'high'
             }"
           >
-            {{ task.priority }}
+            {{ task.priority | titlecase }}
           </span>
         </div>
-      </div>
-      <button
-        class="text-red-600 hover:text-red-800"
-        (click)="deleteTask(task.id)"
-        title="Supprimer la tâche"
-      >
-        ✖
-      </button>
-    </li>
-  </ul>
 
-  <!-- Pagination simple -->
-  <div class="flex justify-center mt-4 gap-2">
-    <button
-      [disabled]="page === 1"
-      (click)="changePage(page - 1)"
-      class="px-3 py-1 border rounded disabled:opacity-50"
-    >
-      Précédent
-    </button>
-    <span class="px-3 py-1 border rounded bg-gray-100">{{ page }}</span>
-    <button
-      [disabled]="tasks.length < pageSize"
-      (click)="changePage(page + 1)"
-      class="px-3 py-1 border rounded disabled:opacity-50"
-    >
-      Suivant
-    </button>
+        <!-- Mark as Done Button -->
+        <button
+          (click)="markAsDone(task)"
+          [disabled]="task.status === 'done'"
+          class="mt-2 px-3 py-1.5 text-sm rounded-md shadow-sm transition w-full font-medium flex items-center justify-center gap-1"
+          [ngClass]="{
+            'bg-green-500 hover:bg-green-600 text-white': task.status !== 'done',
+            'bg-gray-300 text-gray-500 cursor-not-allowed': task.status === 'done'
+          }"
+          aria-label="{{ task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée' }}"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ task.status === 'done' ? 'Tâche terminée' : 'Marquer comme terminée' }}
+        </button>
+
+        <!-- Metadata -->
+        <div class="text-xs text-gray-400 mt-2">
+          Créée le {{ task.created_at | date: 'short' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-8 gap-3">
+      <button
+        [disabled]="page === 1"
+        (click)="changePage(page - 1)"
+        class="px-4 py-2 bg-white bg-opacity-90 text-gray-600 rounded-lg hover:bg-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Page précédente"
+      >
+        ← Précédent
+      </button>
+      <span class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium">
+        Page {{ page }}
+      </span>
+      <button
+        [disabled]="tasks.length < pageSize"
+        (click)="changePage(page + 1)"
+        class="px-4 py-2 bg-white bg-opacity-90 text-gray-600 rounded-lg hover:bg-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Page suivante"
+      >
+        Suivant →
+      </button>
+    </div>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  standalone: true
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -19,7 +20,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private alertService: AlertModalService
+    private alertService: AlertModalService,
+    private zone: NgZone
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -29,16 +31,23 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.invalid) return;
+
     this.isSubmitting = true;
     const { email, password } = this.loginForm.value;
+
     this.authService.login(email, password).subscribe({
       next: () => {
         this.isSubmitting = false;
-        this.alertService.showAlert(`Bienvenue ${email}`, 'success');
 
-        this.router.navigate(['/tasks']);
+        this.alertService.showAlert(`Bienvenue ${email}`, 'success');
+        setTimeout(() => {
+          this.zone.run(() => this.router.navigate(['/tasks']));
+        }, 1000);
+        },
+      error: () => {
+        this.isSubmitting = false;
+        // Les erreurs sont gérées par ErrorInterceptor
       },
-      error: () => (this.isSubmitting = false), // Erreurs gérées par ErrorInterceptor
     });
   }
 }

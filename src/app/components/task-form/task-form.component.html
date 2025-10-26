@@ -1,0 +1,77 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 py-10 px-4">
+  <div
+    class="w-full max-w-lg bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-100"
+  >
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+      {{ isEditMode ? '✏️ Modifier la Tâche' : '🆕 Nouvelle Tâche' }}
+    </h2>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <!-- Titre -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Titre *</label>
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="Titre de la tâche..."
+          class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 focus:outline-none bg-white/90"
+        />
+        <div
+          *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid"
+          class="text-red-500 text-sm mt-1"
+        >
+          Le titre est requis (min. 3 caractères)
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Description</label>
+        <textarea
+          formControlName="description"
+          rows="3"
+          placeholder="Ajoute une description..."
+          class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 focus:outline-none bg-white/90 resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Statut + Priorité -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Statut</label>
+          <select
+            formControlName="status"
+            title="Statut de la tâche"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-white/90"
+          >
+            <option value="todo">À faire</option>
+            <option value="in_progress">En cours</option>
+            <option value="done">Terminé</option>
+          </select>
+        </div>
+
+        <div>
+          <select
+            formControlName="priority"
+            title="Priorité de la tâche"
+            class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-white/90"
+          >
+          >
+            <option value="low">Basse</option>
+            <option value="medium">Moyenne</option>
+            <option value="high">Haute</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Bouton -->
+      <button
+        type="submit"
+        [disabled]="isSubmitting"
+        class="w-full py-3 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-all duration-300 shadow-md disabled:opacity-50"
+      >
+        {{ isSubmitting ? '⏳ Enregistrement...' : (isEditMode ? '💾 Mettre à jour' : '➕ Ajouter la tâche') }}
+      </button>
+    </form>
+  </div>
+</div>

@@ -30,14 +30,14 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}login/`, { email, password }).pipe(
-      tap((response) => {
-        localStorage.setItem('access_token', response.access);
-        localStorage.setItem('refresh_token', response.refresh);
-        localStorage.setItem('user', JSON.stringify(response.user));
-      })
-    );
-  }
+  return this.http.post<LoginResponse>(`${this.apiUrl}login/`, { email, password }).pipe(
+    tap((response) => {
+      localStorage.setItem('access_token', response.access);
+      localStorage.setItem('refresh_token', response.refresh);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    })
+  );
+}
 
   refreshToken(): Observable<RefreshResponse> {
     return this.http.post<RefreshResponse>(`${this.apiUrl}refresh/`, { refresh: localStorage.getItem('refresh_token') }).pipe(
