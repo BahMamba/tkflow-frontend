@@ -1,22 +1,40 @@
-<div class="min-h-screen bg-linear-to-br from-indigo-50 to-blue-50 py-8 px-4 sm:px-6">
-  <div class="max-w-6xl mx-auto text-center">
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Statistiques de mes tâches</h1>
+<div class="min-h-screen bg-gray-50 py-6 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-semibold text-gray-900 mb-6 text-center flex items-center justify-center gap-2">
+      <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      Statistiques de mes tâches
+    </h1>
 
     <!-- Loader -->
-    <div *ngIf="loading" class="text-center py-8 text-gray-600 text-lg animate-pulse">
+    <div *ngIf="loading" class="text-center py-8 text-gray-600 text-lg animate-pulse flex items-center justify-center gap-2">
+      <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
       Chargement...
     </div>
 
-    <div *ngIf="!loading && stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div *ngIf="!loading && stats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <!-- Total -->
-      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-indigo-600 mb-2">Total</h2>
-        <p class="text-3xl font-bold text-gray-800">{{ stats.total }}</p>
+      <div class="bg-white p-4 rounded-md shadow hover:shadow-md transition">
+        <h2 class="text-md font-semibold text-indigo-600 mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Total
+        </h2>
+        <p class="text-2xl font-bold text-gray-900">{{ stats.total }}</p>
       </div>
 
       <!-- Par statut -->
-      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-blue-600 mb-3">Par statut</h2>
+      <div class="bg-white p-4 rounded-md shadow hover:shadow-md transition">
+        <h2 class="text-md font-semibold text-blue-600 mb-3 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Par statut
+        </h2>
         <ul class="text-gray-700 text-sm space-y-2">
           <li class="flex items-center gap-2">
             <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -40,8 +58,13 @@
       </div>
 
       <!-- Par priorité -->
-      <div class="bg-white bg-opacity-90 p-4 rounded-lg shadow hover:shadow-md transition">
-        <h2 class="text-lg font-semibold text-purple-600 mb-3">Par priorité</h2>
+      <div class="bg-white p-4 rounded-md shadow hover:shadow-md transition">
+        <h2 class="text-md font-semibold text-purple-600 mb-3 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4h13M3 8h13M3 12h13m-7 4h7" />
+          </svg>
+          Par priorité
+        </h2>
         <ul class="text-gray-700 text-sm space-y-2">
           <li class="flex items-center gap-2">
             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

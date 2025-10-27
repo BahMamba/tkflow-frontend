@@ -9,40 +9,43 @@ export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
-    path: 'tasks',
+    path: '',
     canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./layout/main-layout/main-layout.component').then(
+        (m) => m.MainLayoutComponent
+      ),
     children: [
       {
-        path: '',
+        path: 'tasks',
         loadComponent: () =>
           import('./components/task-list/task-list.component').then(
             (m) => m.TaskListComponent
           ),
       },
       {
-        path: 'new',
+        path: 'tasks/new',
         loadComponent: () =>
           import('./components/task-form/task-form.component').then(
             (m) => m.TaskFormComponent
           ),
       },
       {
-        path: 'edit/:id',
+        path: 'tasks/edit/:id',
         loadComponent: () =>
           import('./components/task-form/task-form.component').then(
             (m) => m.TaskFormComponent
           ),
       },
+      {
+        path: 'stats',
+        loadComponent: () =>
+          import('./components/task-stats/task-stats.component').then(
+            (m) => m.TaskStatsComponent
+          ),
+      },
     ],
   },
-
-  {
-    path: 'stats',
-    loadComponent: () =>
-    import('./components/task-stats/task-stats.component').then(m => m.TaskStatsComponent),
-    canActivate: [AuthGuard],
-  },
-
 
   { path: '**', redirectTo: '/login' },
 ];

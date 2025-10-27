@@ -1,17 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { AlertModalService } from '../../services/alert-modal.service';
+import { AlertModal, AlertModalService } from '../../services/alert-modal.service';
 
 @Component({
   selector: 'app-alert',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.css'],
 })
 export class AlertComponent implements OnDestroy {
-  alert: { message: string; type: 'success' | 'error' } | null = null;
+  alert: AlertModal | null = null;
   private subscription: Subscription;
 
   constructor(private alertService: AlertModalService) {
@@ -24,5 +23,12 @@ export class AlertComponent implements OnDestroy {
 
   close() {
     this.alertService.close();
+  }
+
+  confirm() {
+    if (this.alert && this.alert.onConfirm) {
+      this.alert.onConfirm();
+    }
+    this.close();
   }
 }

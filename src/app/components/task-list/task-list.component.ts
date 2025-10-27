@@ -8,10 +8,9 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
-  standalone: true, // Added for Angular standalone components (if applicable)
+  standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.css'] // Note: No external CSS needed since we're using Tailwind inline
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
@@ -49,8 +48,11 @@ export class TaskListComponent implements OnInit {
       });
   }
 
+  confirmDelete(taskId: number): void {
+    this.alertService.showConfirm('Voulez-vous vraiment supprimer cette tâche ?', () => this.deleteTask(taskId));
+  }
+
   deleteTask(taskId: number): void {
-    if (!confirm('Voulez-vous vraiment supprimer cette tâche ?')) return;
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
         this.alertService.showAlert('Tâche supprimée avec succès.', 'success');
@@ -81,11 +83,29 @@ export class TaskListComponent implements OnInit {
     this.taskService.markTaskAsDone(task.id).subscribe({
       next: (updatedTask) => {
         task.status = updatedTask.status;
-        this.alertService.showAlert('Tâche marquée comme terminée.', 'success'); // Added success message
+        this.alertService.showAlert('Tâche marquée comme terminée.', 'success');
       },
       error: () => {
         this.alertService.showAlert('Erreur lors de la mise à jour.', 'error');
       },
     });
+  }
+
+  translateStatus(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      todo: 'À faire',
+      in_progress: 'En cours',
+      done: 'Terminé',
+    };
+    return statusMap[status] || status;
+  }
+
+  translatePriority(priority: string): string {
+    const priorityMap: { [key: string]: string } = {
+      low: 'Basse',
+      medium: 'Moyenne',
+      high: 'Haute',
+    };
+    return priorityMap[priority] || priority;
   }
 }

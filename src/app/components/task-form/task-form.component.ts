@@ -46,7 +46,7 @@ export class TaskFormComponent implements OnInit {
     this.taskService.getTask(this.taskId!).subscribe({
       next: (task: Task) => this.taskForm.patchValue(task),
       error: () => {
-        this.alertService.showAlert('Impossible de charger la tâche ❌', 'error');
+        this.alertService.showAlert('Impossible de charger la tâche.', 'error');
         this.router.navigate(['/tasks']);
       },
     });
@@ -69,14 +69,14 @@ export class TaskFormComponent implements OnInit {
       next: () => {
         this.isSubmitting = false;
         this.alertService.showAlert(
-          this.isEditMode ? 'Tâche mise à jour avec succès ✅' : 'Tâche ajoutée avec succès 🎉',
+          this.isEditMode ? 'Tâche mise à jour avec succès.' : 'Tâche ajoutée avec succès.',
           'success'
         );
-        this.router.navigate(['/tasks']); // ✅ redirection après succès
+        this.router.navigate(['/tasks']);
       },
       error: () => {
         this.isSubmitting = false;
-        this.alertService.showAlert('Erreur lors de la sauvegarde ❌', 'error');
+        this.alertService.showAlert('Erreur lors de la sauvegarde.', 'error');
       },
     });
   }

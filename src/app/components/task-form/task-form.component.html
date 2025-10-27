@@ -1,61 +1,73 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 py-10 px-4">
-  <div
-    class="w-full max-w-lg bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-100"
-  >
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
-      {{ isEditMode ? '✏️ Modifier la Tâche' : '🆕 Nouvelle Tâche' }}
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
+  <div class="w-full max-w-md bg-white p-6 rounded-md shadow-md">
+    <h2 class="text-xl font-semibold text-gray-900 mb-6 text-center flex items-center justify-center gap-2">
+      <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          [attr.d]="isEditMode ? 'M16.862 4.487l1.687 1.687a2.25 2.25 0 010 3.182l-8.839 8.839a4.5 4.5 0 01-1.591.99l-3.444 1.149 1.149-3.444a4.5 4.5 0 01.99-1.591l8.839-8.839a2.25 2.25 0 013.182 0z' : 'M12 4v16m8-8H4'"
+        />
+      </svg>
+      {{ isEditMode ? 'Modifier la Tâche' : 'Nouvelle Tâche' }}
     </h2>
 
-    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-5">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-4">
       <!-- Titre -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Titre *</label>
-        <input
-          type="text"
-          formControlName="title"
-          placeholder="Titre de la tâche..."
-          class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 focus:outline-none bg-white/90"
-        />
-        <div
-          *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid"
-          class="text-red-500 text-sm mt-1"
-        >
-          Le titre est requis (min. 3 caractères)
+        <label class="block text-gray-700 text-sm font-medium mb-1">Titre *</label>
+        <div class="relative">
+          <input
+            type="text"
+            formControlName="title"
+            placeholder="Titre de la tâche..."
+            class="w-full p-2 pl-8 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
+          />
+          <svg class="w-4 h-4 text-gray-400 absolute left-2 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
         </div>
+        <p *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid" class="text-red-500 text-xs mt-1">
+          Le titre est requis (min. 3 caractères)
+        </p>
       </div>
 
       <!-- Description -->
       <div>
-        <label class="block text-gray-700 font-medium mb-1">Description</label>
-        <textarea
-          formControlName="description"
-          rows="3"
-          placeholder="Ajoute une description..."
-          class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 focus:outline-none bg-white/90 resize-none"
-        ></textarea>
+        <label class="block text-gray-700 text-sm font-medium mb-1">Description</label>
+        <div class="relative">
+          <textarea
+            formControlName="description"
+            rows="3"
+            placeholder="Description de la tâche..."
+            class="w-full p-2 pl-8 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none transition resize-none"
+          ></textarea>
+          <svg class="w-4 h-4 text-gray-400 absolute left-2 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        </div>
       </div>
 
-      <!-- Statut + Priorité -->
+      <!-- Statut et Priorité -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-700 font-medium mb-1">Statut</label>
+          <label class="block text-gray-700 text-sm font-medium mb-1">Statut</label>
           <select
             formControlName="status"
-            title="Statut de la tâche"
-            class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-white/90"
+            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition"
+            aria-label="Statut de la tâche"
           >
             <option value="todo">À faire</option>
             <option value="in_progress">En cours</option>
             <option value="done">Terminé</option>
           </select>
         </div>
-
         <div>
+          <label class="block text-gray-700 text-sm font-medium mb-1">Priorité</label>
           <select
             formControlName="priority"
-            title="Priorité de la tâche"
-            class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 bg-white/90"
-          >
+            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 transition"
+            aria-label="Priorité de la tâche"
           >
             <option value="low">Basse</option>
             <option value="medium">Moyenne</option>
@@ -67,10 +79,13 @@
       <!-- Bouton -->
       <button
         type="submit"
-        [disabled]="isSubmitting"
-        class="w-full py-3 mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-all duration-300 shadow-md disabled:opacity-50"
+        [disabled]="isSubmitting || taskForm.invalid"
+        class="w-full py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
       >
-        {{ isSubmitting ? '⏳ Enregistrement...' : (isEditMode ? '💾 Mettre à jour' : '➕ Ajouter la tâche') }}
+        <svg *ngIf="isSubmitting" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        {{ isSubmitting ? 'Enregistrement...' : (isEditMode ? 'Mettre à jour' : 'Ajouter') }}
       </button>
     </form>
   </div>
